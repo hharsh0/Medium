@@ -1,15 +1,25 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Divider } from "@nextui-org/react";
-import { Button, ButtonGroup } from "@nextui-org/react";
 import { Medium, Write, Search, Bell} from "@/Icons";
 import Link from "next/link";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, Settings, User } from "lucide-react";
+
 
 const Layout = ({ children }: any) => {
   return (
     <>
-      <nav className="flex items-center w-full justify-between px-4 my-2">
-        <div className="flex items-center gap-4">
+      <nav className="flex items-center w-full justify-between px-4 my-2 shrink-0">
+        <div className="flex items-center gap-4 shrink-0">
           <Link href="/">
             <Medium />
           </Link>
@@ -22,7 +32,7 @@ const Layout = ({ children }: any) => {
           </div>
         </div>
 
-        <div className="flex items-center gap-4 cursor-pointer">
+        <div className="flex items-center gap-4 cursor-pointer shrink-0">
           <div className="flex items-center text-gray-500 gap-2">
             <Write />
             <p className="hover:text-stone-950">Write</p>
@@ -31,10 +41,35 @@ const Layout = ({ children }: any) => {
             <Bell />
           </div>
           <div>
-            <Avatar>
-              <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-              <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
+            <DropdownMenu>
+              <DropdownMenuTrigger>
+                <Avatar>
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>CN</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <User className="mr-2 h-4 w-4 text-gray-500" />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Settings className="mr-2 h-4 w-4 text-gray-500" />
+                    <span>Settings</span>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <LogOut className="mr-2 h-4 w-4 text-gray-500" />
+                    <span>Sign Out</span>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
         </div>
       </nav>

@@ -42,7 +42,7 @@ export default function Home() {
               <Tab title="Web development" />
             </Tabs>
           </div> */}
-          <div className="my-4 flex items-center justify-between font-normal text-sm text-gray-500 px-8">
+          <div className="my-4 hidden sm:flex items-center justify-between font-normal text-sm text-gray-500 px-8 overflow-x-auto max-w-3xl shrink-0 ">
             {tabs.map((tab, index) => (
               <button
                 key={index}
