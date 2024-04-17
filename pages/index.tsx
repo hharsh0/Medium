@@ -10,36 +10,27 @@ import {
   AvatarSmall,
 } from "@/components/ui/avatar";
 import { Divider } from "@nextui-org/react";
+import Link from "next/link";
+import { SetStateAction, useState } from "react";
+import { motion } from "framer-motion";
+import { Plus } from "@/Icons";
 
 
 
 const inter = Inter({ subsets: ["latin"] });
 
-const Icon = ()=>{
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className="w-6 h-6"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"
-      />
-    </svg>
-  );
-}
-
 export default function Home() {
+  const [selectedTab, setSelectedTab] = useState(0);
+  const tabs = [<Plus/>, "For you", "Following", "Creativity", "Film", "Space", "Apple", "Android"];
+
+  const handleTabClick = (index: SetStateAction<number>) => {
+    setSelectedTab(index);
+  };
   return (
     <>
       <div className="flex">
-        <div className="flex flex-col">
-          <div className="flex justify-center my-4">
+        <div className="">
+          {/* <div className="my-4 border-b text-stone-300 bg-red-300">
             <Tabs variant="underlined" aria-label="Tabs variants">
               <Tab title="For you" />
               <Tab title="Following" />
@@ -50,15 +41,36 @@ export default function Home() {
               <Tab title="Android" />
               <Tab title="Web development" />
             </Tabs>
+          </div> */}
+          <div className="my-4 flex items-center justify-between font-normal text-sm text-gray-500 px-8">
+            {tabs.map((tab, index) => (
+              <button
+                key={index}
+                onClick={() => handleTabClick(index)}
+                className={`${
+                  index === selectedTab
+                    ? "border-b-1 border-gray-800 text-gray-800"
+                    : "border-b border-transparent"
+                } py-2 px-4 focus:outline-none`}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
-          <div className="justify-center mt-8">
+
+          <div className="">
             {sampleData.map((data) => (
-              <Card title={data.title} content={data.content} />
+              <>
+                <Link href="/article">
+                  <Card title={data.title} content={data.content} />
+                </Link>
+                <Divider />
+              </>
             ))}
           </div>
         </div>
 
-        <div className=" mx-4 p-4 border-l border-gray-100">
+        <div className=" mx-4 p-4 border-l border-gray-200 hidden sm:block">
           <div className="my-4">
             <div className="font-medium">Staff Picks</div>
             <div className="mt-4">
@@ -136,7 +148,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="border-2 p-2 rounded-full text-xs border-gray-800">
+              <div className="border-2 p-2 rounded-full text-xs border-gray-800 cursor-pointer">
                 Follow
               </div>
             </div>
@@ -158,7 +170,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="border-2 p-2 rounded-full text-xs border-gray-800">
+              <div className="border-2 p-2 rounded-full text-xs border-gray-800 cursor-pointer">
                 Follow
               </div>
             </div>
@@ -181,7 +193,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="border-2 p-2 rounded-full text-xs border-gray-800">
+              <div className="border-2 p-2 rounded-full text-xs border-gray-800 cursor-default">
                 Follow
               </div>
             </div>
