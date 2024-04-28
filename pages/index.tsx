@@ -21,7 +21,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = useState(0);
-  const tabs = [<Plus/>, "For you", "Following", "Creativity", "Film", "Space", "Apple", "Android"];
+  const tabs = [<Plus key="plus"/>, "For you", "Following", "Creativity", "Film", "Space", "Apple", "Android"];
 
   const handleTabClick = (index: SetStateAction<number>) => {
     setSelectedTab(index);
