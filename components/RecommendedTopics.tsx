@@ -9,7 +9,7 @@ const RecommendedTopics = () => {
     <div>
       <div className="font-medium">Recommended Topics</div>
       <div className="flex gap-2 flex-wrap my-4">
-        {topics.map((data)=> <Chip>{data}</Chip>)}
+        {topics.map((data,index)=> <Chip key={index}>{data}</Chip>)}
       </div>
     </div>
   )

@@ -59,9 +59,9 @@ export default function Home() {
           </div>
 
           <div className="">
-            {sampleData.map((data) => (
+            {sampleData.map((data, index) => (
               <>
-                <Link href="/article">
+                <Link key={index} href="/article">
                   <Card title={data.title} content={data.content} />
                 </Link>
                 <Divider />
