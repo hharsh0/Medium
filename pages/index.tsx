@@ -14,12 +14,16 @@ import Link from "next/link";
 import { SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus } from "@/Icons";
+import { useDispatch, useSelector } from "react-redux";
+import {setLogin, setLogout} from "../store/AuthSlice";
+import Login from "@/components/Login";
+import { RootState } from "@/store/store";
 
 
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+function Main() {
   const [selectedTab, setSelectedTab] = useState(0);
   const tabs = [<Plus/>, "For you", "Following", "Creativity", "Film", "Space", "Apple", "Android"];
 
@@ -202,4 +206,25 @@ export default function Home() {
       </div>
     </>
   );
+}
+
+export default function Home(){
+  const dispatch = useDispatch();
+      const { isLoggedIn } = useSelector(
+        (state: RootState) => state.auth
+      );
+  const login = (token: string) => {
+    dispatch(setLogin(token));
+  };
+
+  const logout = () => {
+    dispatch(setLogout());
+  };
+
+  return(
+    <>
+    {isLoggedIn? <Main />: <Login />}
+    </>
+  )
+
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Divider } from "@nextui-org/react";
-import { Medium, Write, Search, Bell} from "@/Icons";
+import { Medium, Write, Search, Bell } from "@/Icons";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -13,7 +13,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
 
 const Layout = ({ children }: any) => {
   return (
@@ -82,4 +83,62 @@ const Layout = ({ children }: any) => {
   );
 };
 
-export default Layout;
+const AuthLayout = ({ children }: any) => {
+  return (
+    <div className="flex flex-col min-h-screen bg-[#FFC017]">
+      <nav className="container py-4 flex justify-between items-center">
+        <Link href="/">
+          <div className="flex items-center gap-4">
+            <Medium />
+            <div className="font-black text-3xl">Medium</div>
+          </div>
+        </Link>
+        <div className="flex items-center gap-4">
+          <div className="hidden lg:block">Our story</div>
+          <div className="hidden lg:block">Membership</div>
+          <div className="hidden lg:block">Write</div>
+          <div className="hidden lg:block">Sign in</div>
+          <button className="bg-black text-white rounded-full px-10 py-2">
+            Get started
+          </button>
+        </div>
+      </nav>
+      <Divider className="" />
+
+      <div className="flex-grow flex items-center">
+        <div className="container mx-auto flex-grow items-center">
+          {children}
+        </div>
+      </div>
+      <Divider className="" />
+
+      <div className="w-full hidden sm:flex items-center justify-center gap-4 text-xs text-gray-500 py-6 bg-white">
+        <div>Help</div>
+        <div>Status</div>
+        <div>About</div>
+        <div>Careers</div>
+        <div>Press</div>
+        <div>Blog</div>
+        <div>Privacy</div>
+        <div>Terms</div>
+        <div>Text to speech</div>
+        <div>Teams</div>
+      </div>
+    </div>
+  );
+};
+
+const MainLayout = ({ children }: any) => {
+  const { isLoggedIn } = useSelector((state: RootState) => state.auth);
+  return (
+    <>
+      {isLoggedIn ? (
+        <Layout>{children}</Layout>
+      ) : (
+        <AuthLayout>{children}</AuthLayout>
+      )}
+    </>
+  );
+};
+
+export default MainLayout;
