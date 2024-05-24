@@ -15,7 +15,6 @@ import { SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus } from "@/Icons";
 import { useDispatch, useSelector } from "react-redux";
-import {setLogin, setLogout} from "../store/AuthSlice";
 import Login from "@/components/Login";
 import { RootState } from "@/store/store";
 
