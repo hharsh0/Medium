@@ -12,16 +12,20 @@ import Cookies from "js-cookie";
 
 interface AuthState{
     isLoggedIn: boolean,
-    token: string,
+    accessToken: string,
     name: string,
     email: string,
     photoURL: string,
     error: string | null,
 }
 
+interface User extends UserCredential{
+  accessToken: string | null,
+}
+
 const initialState: AuthState = {
   isLoggedIn: !!Cookies.get("token"),
-  token: "",
+  accessToken: "",
   name: "",
   email: "",
   photoURL: "",
@@ -37,13 +41,11 @@ export const login = createAsyncThunk<
   try {
     const result = await signInWithPopup(auth, provider);
     console.log(result.user);
-    console.log(result.user.email);
-    console.log(result.user.photoURL);
     if(result.user){
-        Cookies.set("token", result.user.accessToken, { expires: 7 });
-        Cookies.set("name", result.user.displayName, { expires: 7 });
-        Cookies.set("email", result.user.email, { expires: 7 });
-        Cookies.set("photoURL", result.user.photoURL, { expires: 7 });
+        Cookies.set("token", (<any>result).user.accessToken, { expires: 7 });
+        Cookies.set("name", result.user?.displayName ?? "", { expires: 7 });
+        Cookies.set("email", result.user?.email ?? "", { expires: 7 });
+        Cookies.set("photoURL", result.user?.photoURL ?? "", { expires: 7 });
     }
     return result;
   } catch (error: any) {
@@ -76,9 +78,9 @@ const authSlice = createSlice({
     builder
       .addCase(
         login.fulfilled,
-        (state, action: PayloadAction<UserCredential | undefined>) => {
+        (state, action: any) => {
           state.isLoggedIn = true;
-          state.token = action.payload?.user.uid || "";
+          state.accessToken = action.payload?.accessToken || "";
           state.error = null;
         }
       )
@@ -86,13 +88,19 @@ const authSlice = createSlice({
         login.rejected,
         (state, action: PayloadAction<string | undefined>) => {
           state.isLoggedIn = false;
-          state.token = "";
+          state.accessToken = "";
+          state.name = "";
+          state.email = "";
+          state.photoURL = "";
           state.error = action.payload || "Login failed";
         }
       )
       .addCase(logout.fulfilled, (state) => {
         state.isLoggedIn = false;
-        state.token = "";
+        state.accessToken = "";
+        state.name = "";
+        state.email = "";
+        state.photoURL = "";
         state.error = null;
       })
       .addCase(
