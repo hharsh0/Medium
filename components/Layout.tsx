@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect, useState} from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Divider } from "@nextui-org/react";
 import { Medium, Write, Search, Bell } from "@/Icons";
@@ -13,10 +13,22 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, Settings, User } from "lucide-react";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store/store";
+import { logout } from "@/store/AuthSlice";
+import Cookies from "js-cookie";
 
 const Layout = ({ children }: any) => {
+  const dispatch: AppDispatch = useDispatch<AppDispatch>();
+  const [photoURL, setPhotoURL] = useState<string | undefined>(undefined);
+  const handleLogout = ()=>{
+    dispatch(logout());
+  }
+  useEffect(() => {
+    const storedPhotoURL = Cookies.get("photoURL");
+    console.log(storedPhotoURL)
+    setPhotoURL(storedPhotoURL || "https://github.com/shadcn.png"); 
+  }, []);
   return (
     <>
       <nav className="flex items-center w-full justify-between px-4 my-2 shrink-0">
@@ -46,11 +58,16 @@ const Layout = ({ children }: any) => {
               <DropdownMenuTrigger>
                 <Avatar>
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={`${photoURL}`}
                     alt="@shadcn"
                   />
                   <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
+                {/* <img
+                  src={photoURL}
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full"
+                /> */}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuLabel>My Account</DropdownMenuLabel>
@@ -64,7 +81,7 @@ const Layout = ({ children }: any) => {
                     <Settings className="mr-2 h-4 w-4 text-gray-500" />
                     <span>Settings</span>
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleLogout}>
                     <LogOut className="mr-2 h-4 w-4 text-gray-500" />
                     <span>Sign Out</span>
                   </DropdownMenuItem>

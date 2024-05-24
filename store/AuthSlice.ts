@@ -13,12 +13,18 @@ import Cookies from "js-cookie";
 interface AuthState{
     isLoggedIn: boolean,
     token: string,
+    name: string,
+    email: string,
+    photoURL: string,
     error: string | null,
 }
 
 const initialState: AuthState = {
   isLoggedIn: !!Cookies.get("token"),
   token: "",
+  name: "",
+  email: "",
+  photoURL: "",
   error: null,
 };
 
@@ -31,8 +37,13 @@ export const login = createAsyncThunk<
   try {
     const result = await signInWithPopup(auth, provider);
     console.log(result.user);
+    console.log(result.user.email);
+    console.log(result.user.photoURL);
     if(result.user){
-        Cookies.set("token", result.user.accessToken)
+        Cookies.set("token", result.user.accessToken, { expires: 7 });
+        Cookies.set("name", result.user.displayName, { expires: 7 });
+        Cookies.set("email", result.user.email, { expires: 7 });
+        Cookies.set("photoURL", result.user.photoURL, { expires: 7 });
     }
     return result;
   } catch (error: any) {
@@ -48,6 +59,9 @@ export const logout = createAsyncThunk<void, void, { rejectValue: string }>(
       const auth = getAuth();
       await signOut(auth);
       Cookies.remove("token");
+      Cookies.remove("email");
+      Cookies.remove("name");
+      Cookies.remove("photoURL");
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }

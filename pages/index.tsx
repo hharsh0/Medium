@@ -23,7 +23,7 @@ import { RootState } from "@/store/store";
 
 const inter = Inter({ subsets: ["latin"] });
 
-function Main() {
+ const Main = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const tabs = [<Plus/>, "For you", "Following", "Creativity", "Film", "Space", "Apple", "Android"];
 
@@ -209,18 +209,9 @@ function Main() {
 }
 
 export default function Home(){
-  const dispatch = useDispatch();
       const { isLoggedIn } = useSelector(
         (state: RootState) => state.auth
       );
-  const login = (token: string) => {
-    dispatch(setLogin(token));
-  };
-
-  const logout = () => {
-    dispatch(setLogout());
-  };
-
   return(
     <>
     {isLoggedIn? <Main />: <Login />}
